@@ -4,167 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HUMIVA - We Are The Upgrade</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
 
-body {
-    background: radial-gradient(circle at top, #1a1f3c, #0a0f1f);
-    color: white;
-}
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
 
-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 10%;
-    align-items: center;
-}
+<meta name="description" content="HUMIVA - We Are The Upgrade. A global system for human evolution.">
+<meta property="og:title" content="HUMIVA - We Are The Upgrade">
+<meta property="og:description" content="Join the global movement for human evolution.">
+<meta property="og:type" content="website">
 
-.logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 2px;
-}
-
-nav a {
-    margin-left: 25px;
-    text-decoration: none;
-    color: #bbb;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #00f5d4;
-}
-
-.hero {
-    text-align: center;
-    padding: 120px 20px;
-}
-
-.hero h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 48px;
-    margin-bottom: 20px;
-}
-
-.hero span {
-    color: #00f5d4;
-}
-
-.hero p {
-    max-width: 700px;
-    margin: auto;
-    font-size: 18px;
-    color: #ccc;
-}
-
-.btn-primary {
-    margin-top: 40px;
-    padding: 15px 35px;
-    border: none;
-    border-radius: 30px;
-    background: linear-gradient(90deg, #00f5d4, #9b5de5);
-    color: black;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-primary:hover {
-    transform: scale(1.05);
-}
-
-.section {
-    padding: 100px 10%;
-    text-align: center;
-}
-
-.section h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
-}
-
-.pillars {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.card {
-    background: rgba(255,255,255,0.05);
-    padding: 30px;
-    border-radius: 15px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateY(-5px);
-}
-
-footer {
-    padding: 40px;
-    text-align: center;
-    font-size: 14px;
-    color: #777;
-}
-</style>
+<script defer src="app.js"></script>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">HUMIVA</div>
-    <nav>
-        <a href="#">About</a>
-        <a href="#">Pulse</a>
-        <a href="#">Missions</a>
-        <a href="#">Join</a>
-    </nav>
+<div class="logo">HUMIVA</div>
+<nav>
+<a href="#pulse">Pulse</a>
+<a href="#missions">Missions</a>
+<a href="#pillars">Pillars</a>
+<button onclick="openAuth()" class="btn-small">Login</button>
+</nav>
 </header>
 
 <section class="hero">
-    <h1>We Are The <span>Upgrade</span></h1>
-    <p>
-        A global movement for human evolution.  
-        Psychology. Consciousness. Performance. Impact.
-    </p>
-    <button class="btn-primary">Join The Movement</button>
+<h1>We Are The <span>Upgrade</span></h1>
+<p>A global system for human evolution.</p>
+<button class="btn-primary" onclick="joinMission()">Join Global Mission</button>
 </section>
 
-<section class="section">
-    <h2>Global Pulse</h2>
-    <p>Real-time emotional temperature of humanity.</p>
+<section id="pulse" class="section">
+<h2>Global Pulse</h2>
+<div class="pulse-grid">
+<div class="pulse-card">Anxiety <span id="anxiety">72%</span></div>
+<div class="pulse-card">Purpose <span id="purpose">44%</span></div>
+<div class="pulse-card">Connection <span id="connection">61%</span></div>
+</div>
 </section>
 
-<section class="section">
-    <h2>Our 5 Evolution Pillars</h2>
-    <div class="pillars">
-        <div class="card">🧠 Mind</div>
-        <div class="card">✨ Consciousness</div>
-        <div class="card">⚡ Energy</div>
-        <div class="card">🤝 Connection</div>
-        <div class="card">🌍 Impact</div>
-    </div>
+<section id="pillars" class="section">
+<h2>5 Evolution Pillars</h2>
+<div class="pillars">
+<div class="card">🧠 Mind</div>
+<div class="card">✨ Consciousness</div>
+<div class="card">⚡ Energy</div>
+<div class="card">🤝 Connection</div>
+<div class="card">🌍 Impact</div>
+</div>
 </section>
 
-<section class="section">
-    <h2>Next Global Mission</h2>
-    <p>24h Without Complaining</p>
-    <button class="btn-primary">Join Mission</button>
+<section id="missions" class="section">
+<h2>Active Mission</h2>
+<div class="mission-box">
+<h3>24h Without Complaining</h3>
+<p>Practice awareness and emotional discipline.</p>
+<button class="btn-primary" onclick="joinMission()">Participate</button>
+</div>
 </section>
 
 <footer>
-    © 2026 HUMIVA — Humanity in Evolution.
+© 2026 HUMIVA — Humanity in Evolution
 </footer>
+
+<div id="authModal" class="modal hidden">
+<div class="modal-content">
+<h3>Login</h3>
+<input type="email" placeholder="Email">
+<input type="password" placeholder="Password">
+<button class="btn-primary">Enter</button>
+<button onclick="closeAuth()" class="btn-small">Close</button>
+</div>
+</div>
 
 </body>
 </html>
