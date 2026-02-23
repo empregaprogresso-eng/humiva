@@ -1,5 +1,4 @@
-
-const CACHE_NAME = "humiva-v2";
+const CACHE_NAME = "humiva-app-v1";
 
 self.addEventListener("install", event => {
   event.waitUntil(
@@ -10,8 +9,9 @@ self.addEventListener("install", event => {
         "/style.css",
         "/app.js",
         "/manifest.json",
-        "/icon-192.png",
-        "/icon-512.png"
+        "/app/index.html",
+        "/app/app.css",
+        "/app/app.js"
       ]);
     })
   );

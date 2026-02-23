@@ -1,8 +1,7 @@
-
 {
   "name": "HUMIVA",
   "short_name": "HUMIVA",
-  "start_url": ".",
+  "start_url": "/app/index.html",
   "display": "standalone",
   "background_color": "#0a0f1f",
   "theme_color": "#00f5d4",
