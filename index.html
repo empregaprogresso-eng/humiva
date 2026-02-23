@@ -5,67 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HUMIVA - We Are The Upgrade</title>
 
-<link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
 <meta name="theme-color" content="#00f5d4">
 
 <script defer src="app.js"></script>
 </head>
-
 <body>
 
 <header>
-    <div class="logo">HUMIVA</div>
-    <nav>
-        <a href="#pulse">Pulse</a>
-        <a href="#missions">Missions</a>
-        <a href="#pillars">Pillars</a>
-        <a href="#" id="installLink" class="install-link">Download App</a>
-    </nav>
+<div class="logo">HUMIVA</div>
+<a href="#" id="installBtn" class="install-btn">📱 Install App</a>
 </header>
 
-<section class="hero">
-    <h1>We Are The <span>Upgrade</span></h1>
-    <p>A global movement for human evolution.</p>
-    <button class="btn-primary" onclick="joinMission()">Join The Movement</button>
+<main class="dashboard">
+
+<section class="hero-card">
+<h1>We Are The Upgrade</h1>
+<p>Humanity in Evolution</p>
+<button onclick="joinMission()">Complete Today's Mission</button>
 </section>
 
-<section id="pulse" class="section">
-    <h2>Global Pulse</h2>
-    <div class="pulse-grid">
-        <div class="pulse-card">Anxiety <span id="anxiety">72%</span></div>
-        <div class="pulse-card">Purpose <span id="purpose">44%</span></div>
-        <div class="pulse-card">Connection <span id="connection">61%</span></div>
-    </div>
+<section class="grid">
+<div class="card">🧠 Mind</div>
+<div class="card">✨ Consciousness</div>
+<div class="card">⚡ Energy</div>
+<div class="card">🤝 Connection</div>
+<div class="card">🌍 Impact</div>
 </section>
 
-<section id="pillars" class="section">
-    <h2>Our 5 Evolution Pillars</h2>
-    <div class="pillars">
-        <a href="#" class="card">🧠 Mind</a>
-        <a href="#" class="card">✨ Consciousness</a>
-        <a href="#" class="card">⚡ Energy</a>
-        <a href="#" class="card">🤝 Connection</a>
-        <a href="#" class="card">🌍 Impact</a>
-    </div>
-</section>
-
-<section id="missions" class="section">
-    <h2>Next Global Mission</h2>
-    <div class="mission-box">
-        <h3>24h Without Complaining</h3>
-        <p>Practice awareness and emotional discipline.</p>
-        <button class="btn-primary" onclick="joinMission()">Participate</button>
-    </div>
-</section>
-
-<footer>
-    © 2026 HUMIVA — Humanity in Evolution.
-</footer>
+</main>
 
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+  navigator.serviceWorker.register('sw.js');
 }
 </script>
 
