@@ -8,20 +8,20 @@ setInterval(() => {
     document.getElementById("connection").innerText = Math.floor(Math.random()*100) + "%";
 }, 5000);
 
-// Install shortcut without layout change
+// PWA install logic
 let deferredPrompt;
 const installLink = document.getElementById('installLink');
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installLink.classList.remove('hidden');
 });
 
-installLink?.addEventListener('click', (e) => {
+installLink.addEventListener('click', (e) => {
     e.preventDefault();
     if (deferredPrompt) {
         deferredPrompt.prompt();
-        deferredPrompt = null;
+    } else {
+        alert("To install: open browser menu and select 'Add to Home Screen'.");
     }
 });
