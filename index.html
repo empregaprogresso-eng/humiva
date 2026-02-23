@@ -7,9 +7,9 @@
 <title>HUMIVA - We Are The Upgrade</title>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00f5d4">
+<meta name="theme-color" content="#0a0f1f">
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 *{
@@ -20,17 +20,31 @@ font-family:'Inter', sans-serif;
 }
 
 body{
-background: radial-gradient(circle at top,#1a1f3c,#0a0f1f);
+background: radial-gradient(circle at top,#14182e,#0a0f1f 70%);
 color:white;
 position:relative;
 overflow-x:hidden;
 }
 
-/* ============================= */
-/* CINEMATIC SPHERE BACKGROUND */
-/* ============================= */
-
+/* SUBTLE SPHERE WATERMARK */
 body::before{
+content:"";
+position:fixed;
+top:50%;
+left:50%;
+width:800px;
+height:800px;
+transform:translate(-50%,-50%);
+background:url("icon-512.png") no-repeat center;
+background-size:contain;
+opacity:0.05;
+filter: drop-shadow(0 0 120px rgba(155,93,229,0.6));
+pointer-events:none;
+z-index:0;
+}
+
+/* PURPLE LIGHT RAYS */
+body::after{
 content:"";
 position:fixed;
 top:50%;
@@ -38,79 +52,39 @@ left:50%;
 width:1000px;
 height:1000px;
 transform:translate(-50%,-50%);
-background:url("icon-512.png") no-repeat center;
-background-size:contain;
-opacity:0.08;
-filter:drop-shadow(0 0 120px #9b5de5)
-       drop-shadow(0 0 200px #6a00f4);
-animation:floatSphere 8s ease-in-out infinite,
-         rotateSphere 60s linear infinite;
-z-index:0;
+background: radial-gradient(circle, rgba(155,93,229,0.15) 0%, rgba(106,0,244,0.05) 40%, transparent 70%);
 pointer-events:none;
-}
-
-@keyframes floatSphere{
-0%,100%{transform:translate(-50%,-50%) translateY(0px);}
-50%{transform:translate(-50%,-50%) translateY(-20px);}
-}
-
-@keyframes rotateSphere{
-from{filter:drop-shadow(0 0 120px #9b5de5) drop-shadow(0 0 200px #6a00f4);}
-to{filter:drop-shadow(0 0 160px #9b5de5) drop-shadow(0 0 240px #6a00f4);}
-}
-
-/* Orbit Particles */
-.orbit{
-position:fixed;
-top:50%;
-left:50%;
-width:900px;
-height:900px;
-transform:translate(-50%,-50%);
-border-radius:50%;
-pointer-events:none;
-animation:spin 40s linear infinite;
 z-index:0;
 }
-
-.orbit span{
-position:absolute;
-width:6px;
-height:6px;
-background:#9b5de5;
-border-radius:50%;
-box-shadow:0 0 15px #9b5de5,0 0 25px #6a00f4;
-}
-
-.orbit span:nth-child(1){top:0;left:50%;}
-.orbit span:nth-child(2){bottom:0;left:50%;}
-.orbit span:nth-child(3){left:0;top:50%;}
-.orbit span:nth-child(4){right:0;top:50%;}
-
-@keyframes spin{
-from{transform:translate(-50%,-50%) rotate(0deg);}
-to{transform:translate(-50%,-50%) rotate(360deg);}
-}
-
-/* ============================= */
 
 header{
 display:flex;
 justify-content:space-between;
-padding:20px 10%;
 align-items:center;
+padding:25px 10%;
 position:relative;
 z-index:1;
 }
 
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-family:'Orbitron', sans-serif;
+font-size:26px;
+letter-spacing:2px;
+}
+
 .logo img{
-height:45px;
+width:28px;
+height:28px;
 }
 
 nav a{
 margin-left:25px;
 text-decoration:none;
-color:#bbb;
+color:#aaa;
+font-weight:400;
 transition:0.3s;
 }
 
@@ -118,31 +92,30 @@ nav a:hover{
 color:#00f5d4;
 }
 
-.download-btn{
+/* SOCIAL STYLE DOWNLOAD LINK */
+.app-link{
 margin-left:25px;
-padding:10px 20px;
-border-radius:25px;
-background:linear-gradient(90deg,#00f5d4,#9b5de5);
-color:black;
-font-weight:bold;
+color:#00f5d4;
+font-weight:500;
 text-decoration:none;
+opacity:0.8;
 transition:0.3s;
 }
 
-.download-btn:hover{
-transform:scale(1.05);
+.app-link:hover{
+opacity:1;
 }
 
 .hero{
 text-align:center;
-padding:120px 20px;
+padding:140px 20px 120px 20px;
 position:relative;
 z-index:1;
 }
 
 .hero h1{
 font-family:'Orbitron', sans-serif;
-font-size:48px;
+font-size:52px;
 margin-bottom:20px;
 }
 
@@ -151,64 +124,65 @@ color:#00f5d4;
 }
 
 .hero p{
-max-width:700px;
+max-width:750px;
 margin:auto;
 font-size:18px;
-color:#ccc;
+color:#bbb;
+line-height:1.6;
 }
 
 .btn-primary{
-margin-top:40px;
+margin-top:45px;
 padding:15px 35px;
 border:none;
 border-radius:30px;
 background:linear-gradient(90deg,#00f5d4,#9b5de5);
 color:black;
-font-weight:bold;
+font-weight:600;
 cursor:pointer;
 transition:0.3s;
 }
 
 .btn-primary:hover{
-transform:scale(1.05);
+transform:scale(1.04);
 }
 
 .section{
-padding:100px 10%;
+padding:110px 10%;
 text-align:center;
 position:relative;
 z-index:1;
 }
 
 .section h2{
-font-size:32px;
-margin-bottom:30px;
+font-size:34px;
+margin-bottom:25px;
 }
 
 .pillars{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:30px;
-margin-top:40px;
+margin-top:50px;
 }
 
 .card{
-background:rgba(255,255,255,0.05);
-padding:30px;
-border-radius:15px;
+background:rgba(255,255,255,0.04);
+padding:35px;
+border-radius:18px;
 transition:0.3s;
 }
 
 .card:hover{
-background:rgba(255,255,255,0.1);
-transform:translateY(-5px);
+background:rgba(255,255,255,0.08);
+transform:translateY(-6px);
 }
 
 footer{
-padding:40px;
+padding:60px 20px;
 text-align:center;
 font-size:14px;
-color:#777;
+color:#666;
 position:relative;
 z-index:1;
 }
@@ -217,23 +191,17 @@ z-index:1;
 
 <body>
 
-<div class="orbit">
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-</div>
-
 <header>
 <div class="logo">
-<img src="humiva-full-logo.png">
+<img src="icon-192.png">
+HUMIVA
 </div>
 <nav>
 <a href="#">About</a>
 <a href="#">Pulse</a>
 <a href="#">Missions</a>
 <a href="#">Join</a>
-<a href="/app/index.html" class="download-btn">📱 Get The App</a>
+<a href="/app/index.html" class="app-link">Get the App</a>
 </nav>
 </header>
 
@@ -273,7 +241,7 @@ Psychology. Consciousness. Performance. Impact.
 </footer>
 
 <script>
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator') {
 navigator.serviceWorker.register('/sw.js');
 }
 </script>
