@@ -25,5 +25,7 @@ function incrementGlobal() {
 }
 
 counterRef.onSnapshot(doc => {
-  updateCounter(doc.data().count);
+  if(doc.exists){
+    document.getElementById("globalCount").innerText = doc.data().count;
+  }
 });
