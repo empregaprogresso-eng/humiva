@@ -8,25 +8,20 @@ setInterval(() => {
     document.getElementById("connection").innerText = Math.floor(Math.random()*100) + "%";
 }, 5000);
 
-// PWA Install Logic
+// Install shortcut without layout change
 let deferredPrompt;
-
-const installBtnHeader = document.getElementById('installBtnHeader');
-const installBtnHero = document.getElementById('installBtnHero');
+const installLink = document.getElementById('installLink');
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installBtnHeader.classList.remove('hidden');
-    installBtnHero.classList.remove('hidden');
+    installLink.classList.remove('hidden');
 });
 
-function triggerInstall() {
+installLink?.addEventListener('click', (e) => {
+    e.preventDefault();
     if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt = null;
     }
-}
-
-installBtnHeader?.addEventListener('click', triggerInstall);
-installBtnHero?.addEventListener('click', triggerInstall);
+});
