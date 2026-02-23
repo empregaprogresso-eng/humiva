@@ -7,15 +7,8 @@
 
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-
 <meta name="theme-color" content="#00f5d4">
-<meta name="description" content="HUMIVA - We Are The Upgrade. A global system for human evolution.">
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
-<script defer src="firebase.js"></script>
 <script defer src="app.js"></script>
 </head>
 
@@ -27,15 +20,18 @@
         <a href="#pulse">Pulse</a>
         <a href="#missions">Missions</a>
         <a href="#pillars">Pillars</a>
-        <button id="installBtn" class="btn-small hidden">📱 Install App</button>
-        <span class="counter">🌍 Global Actions: <strong id="globalCount">0</strong></span>
+        <button id="installBtnHeader" class="btn-install hidden">📱 Download App</button>
     </nav>
 </header>
 
 <section class="hero">
     <h1>We Are The <span>Upgrade</span></h1>
     <p>A global movement for human evolution.</p>
-    <button class="btn-primary" onclick="joinMission()">Join The Movement</button>
+    
+    <div class="hero-buttons">
+        <button class="btn-primary" onclick="joinMission()">Join The Movement</button>
+        <button id="installBtnHero" class="btn-install hidden">📲 Install HUMIVA App</button>
+    </div>
 </section>
 
 <section id="pulse" class="section">

@@ -1,6 +1,5 @@
 function joinMission() {
-    incrementGlobal();
-    alert("You are the upgrade. Action recorded globally.");
+    alert("You are the upgrade.");
 }
 
 setInterval(() => {
@@ -11,21 +10,23 @@ setInterval(() => {
 
 // PWA Install Logic
 let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
+
+const installBtnHeader = document.getElementById('installBtnHeader');
+const installBtnHero = document.getElementById('installBtnHero');
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installBtn.classList.remove('hidden');
+    installBtnHeader.classList.remove('hidden');
+    installBtnHero.classList.remove('hidden');
 });
 
-installBtn.addEventListener('click', async () => {
+function triggerInstall() {
     if (deferredPrompt) {
         deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            installBtn.classList.add('hidden');
-        }
         deferredPrompt = null;
     }
-});
+}
+
+installBtnHeader?.addEventListener('click', triggerInstall);
+installBtnHero?.addEventListener('click', triggerInstall);
