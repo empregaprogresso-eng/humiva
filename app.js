@@ -1,17 +1,11 @@
+let streak = 0;
+
 function joinMission() {
-  alert("Welcome to the mission! You are the upgrade.");
+  incrementGlobal();
+  streak++;
+  document.getElementById("streak").innerText = streak;
 }
 
-function openAuth() {
-  document.getElementById("authModal").classList.remove("hidden");
+function updateCounter(value) {
+  document.getElementById("globalCount").innerText = value;
 }
-
-function closeAuth() {
-  document.getElementById("authModal").classList.add("hidden");
-}
-
-setInterval(() => {
-  document.getElementById("anxiety").innerText = Math.floor(Math.random()*100) + "%";
-  document.getElementById("purpose").innerText = Math.floor(Math.random()*100) + "%";
-  document.getElementById("connection").innerText = Math.floor(Math.random()*100) + "%";
-}, 5000);
