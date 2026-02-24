@@ -4,34 +4,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUMIVA App</title>
-<link rel="stylesheet" href="app.css">
+<title>HUMIVA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:'Inter',sans-serif;background:linear-gradient(180deg,#0b0f1a,#111827);color:white;}
+.container{max-width:900px;margin:auto;padding:40px 20px;}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;}
+.logo{font-weight:700;font-size:20px;}
+button{padding:10px 20px;border:none;border-radius:8px;background:#6366f1;color:white;font-weight:600;cursor:pointer;}
+.card{background:#1f2937;padding:25px;border-radius:16px;margin-bottom:20px;}
+.mission{display:flex;justify-content:space-between;align-items:center;margin-top:15px;}
+.progress{height:8px;background:#374151;border-radius:10px;margin-top:10px;overflow:hidden;}
+.bar{height:100%;background:#6366f1;width:0%;transition:0.3s;}
+.small{color:#9ca3af;font-size:14px;}
+.hidden{display:none;}
+</style>
 </head>
+
 <body>
 
-<div class="app">
-<header class="top">
-<img src="../humiva-full-logo.png" style="width:180px;">
+<div class="container">
+
+<header>
+<div class="logo">HUMIVA</div>
+<div id="authArea">
+<button onclick="login()">Login with Google</button>
+</div>
 </header>
 
-<section class="card">
-<h2>Global Temperature</h2>
-<div class="stats">
-<div>Anxiety <strong>72°</strong></div>
-<div>Purpose <strong>44°</strong></div>
-<div>Loneliness <strong>61°</strong></div>
-</div>
-</section>
+<div id="appArea" class="hidden">
 
-<nav class="bottom">
-<button onclick="goTo('index.html')">Pulse</button>
-<button onclick="goTo('missions.html')">Missions</button>
-<button onclick="goTo('evolve.html')">Evolve</button>
-<button onclick="goTo('profile.html')">Profile</button>
-</nav>
-
+<div class="card">
+<h2>Welcome, <span id="userName"></span></h2>
+<p class="small">Level <span id="level">1</span></p>
+<div class="progress"><div class="bar" id="xpBar"></div></div>
+<p class="small"><span id="xp">0</span>/100 XP</p>
 </div>
 
-<script src="app.js"></script>
+<div class="card">
+<h2>Today's Missions</h2>
+<div id="missionsList"></div>
+</div>
+
+</div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_AUTH_DOMAIN",
+projectId: "YOUR_PROJECT_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+window.login = function(){ signInWithPopup(auth, provider); }
+
+onAuthStateChanged(auth, (user) => {
+if(user){
+document.getElementById("authArea").classList.add("hidden");
+document.getElementById("appArea").classList.remove("hidden");
+document.getElementById("userName").innerText = user.displayName;
+loadUserData();
+}
+});
+
+let xp = parseInt(localStorage.getItem("xp")) || 0;
+let level = parseInt(localStorage.getItem("level")) || 1;
+
+const missions = [
+"24h without complaining",
+"Help someone today",
+"10 minutes of silence",
+"Send gratitude message",
+"No social media for 1h"
+];
+
+function loadUserData(){ updateUI(); renderMissions(); }
+
+function updateUI(){
+document.getElementById("xp").innerText = xp;
+document.getElementById("level").innerText = level;
+document.getElementById("xpBar").style.width = xp + "%";
+}
+
+function completeMission(){
+xp += 20;
+if(xp >= 100){ level++; xp = 0; alert("Level Up 🚀"); }
+localStorage.setItem("xp", xp);
+localStorage.setItem("level", level);
+updateUI();
+}
+
+function renderMissions(){
+const list = document.getElementById("missionsList");
+list.innerHTML = "";
+missions.sort(() => 0.5 - Math.random()).slice(0,3).forEach(m => {
+const div = document.createElement("div");
+div.className = "mission";
+div.innerHTML = `<span>${m}</span><button onclick="completeMission()">Complete</button>`;
+list.appendChild(div);
+});
+}
+
+window.completeMission = completeMission;
+
+</script>
+
 </body>
 </html>
