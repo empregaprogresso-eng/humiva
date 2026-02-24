@@ -1,313 +1,169 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUMIVA App</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-
-body{
-background:radial-gradient(circle at top,#0f172a,#020617 70%);
-color:white;
-overflow-x:hidden;
-}
-
-.app{
-max-width:420px;
-margin:auto;
-padding:20px;
-padding-bottom:120px;
-}
-
-.header{text-align:center;margin-bottom:25px;}
-.logo{font-size:22px;font-weight:700;letter-spacing:3px;}
-.subtitle{font-size:12px;color:#94a3b8;margin-top:4px;}
-
-.greeting{
-margin-top:25px;
-font-size:16px;
-color:#cbd5e1;
-}
-
-.auth-buttons{
-margin-top:15px;
-display:flex;
-gap:10px;
-}
-
-.login-btn,.logout-btn{
-padding:8px 14px;
-border:none;
-border-radius:10px;
-font-size:12px;
-cursor:pointer;
-font-weight:600;
-}
-
-.login-btn{
-background:#6366f1;
-color:white;
-}
-
-.logout-btn{
-background:#ef4444;
-color:white;
-display:none;
-}
-
-.temperature-card{
-margin-top:20px;
-padding:20px;
-border-radius:20px;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(15px);
-position:relative;
-overflow:hidden;
-}
-
-.sphere{
-position:absolute;
-right:-40px;
-top:-40px;
-width:180px;
-height:180px;
-border-radius:50%;
-background:radial-gradient(circle at 30% 30%,#60a5fa,#7c3aed 70%);
-box-shadow:0 0 40px #7c3aed,0 0 80px rgba(124,58,237,0.5);
-animation:rotate 12s linear infinite;
-opacity:0.9;
-}
-
-@keyframes rotate{
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
-}
-
-.temperature-title{
-font-size:18px;
-font-weight:600;
-margin-bottom:15px;
-}
-
-.metrics{
-display:flex;
-gap:15px;
-margin-top:15px;
-}
-
-.metric{
-background:rgba(255,255,255,0.05);
-padding:10px;
-border-radius:12px;
-flex:1;
-text-align:center;
-font-size:14px;
-}
-
-.metric span{
-display:block;
-font-size:18px;
-font-weight:600;
-margin-top:4px;
-}
-
-.mission{
-margin-top:30px;
-padding:20px;
-border-radius:20px;
-background:linear-gradient(135deg,#1e293b,#0f172a);
-}
-
-.mission h3{
-font-size:18px;
-margin-bottom:10px;
-}
-
-.mission button{
-margin-top:10px;
-padding:10px 20px;
-border:none;
-border-radius:12px;
-background:#6366f1;
-color:white;
-cursor:pointer;
-font-weight:600;
-}
-
-.progress-card{
-margin-top:25px;
-padding:20px;
-border-radius:20px;
-background:rgba(255,255,255,0.05);
-}
-
-.progress-bar{
-height:8px;
-background:rgba(255,255,255,0.1);
-border-radius:20px;
-margin-top:10px;
-overflow:hidden;
-}
-
-.progress-fill{
-height:100%;
-width:45%;
-background:linear-gradient(90deg,#60a5fa,#a855f7);
-animation:progressAnim 2s ease forwards;
-}
-
-@keyframes progressAnim{
-from{width:0;}
-to{width:45%;}
-}
-
-.impact{
-margin-top:30px;
-}
-
-.impact h3{
-margin-bottom:15px;
-}
-
-.impact-grid{
-display:flex;
-gap:15px;
-}
-
-.impact-card{
-flex:1;
-background:rgba(255,255,255,0.05);
-padding:15px;
-border-radius:15px;
-text-align:center;
-font-size:14px;
-}
-
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:rgba(15,23,42,0.95);
-display:flex;
-justify-content:space-around;
-padding:15px 0;
-backdrop-filter:blur(10px);
-border-top:1px solid rgba(255,255,255,0.05);
-}
-
-.bottom-nav div{
-font-size:12px;
-text-align:center;
-color:#94a3b8;
-cursor:pointer;
-}
-
-.bottom-nav div:hover{
-color:white;
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<div class="header">
-<div class="logo">HUMIVA</div>
-<div class="subtitle">The Human Evolution Network</div>
-</div>
-
-<div class="greeting" id="greeting">
-Checking authentication...
-</div>
-
-<div class="auth-buttons">
-<button class="login-btn" id="loginBtn">Login with Google</button>
-<button class="logout-btn" id="logoutBtn">Logout</button>
-</div>
-
-<div class="temperature-card">
-<div class="sphere"></div>
-<div class="temperature-title">Global Temperature</div>
-
-<div class="metrics">
-<div class="metric">Anxiety<span>72°</span></div>
-<div class="metric">Purpose<span>44°</span></div>
-<div class="metric">Loneliness<span>61°</span></div>
-</div>
-</div>
-
-<div class="mission">
-<h3>24h Without Complaining</h3>
-<p>Join the global mission and elevate your awareness.</p>
-<button>Join Global Mission</button>
-</div>
-
-<div class="progress-card">
-<div>Mature Mental Awareness — Level 5</div>
-<div class="progress-bar">
-<div class="progress-fill"></div>
-</div>
-</div>
-
-<div class="impact">
-<h3>Global Impact</h3>
-<div class="impact-grid">
-<div class="impact-card">❤️ Forgiveness</div>
-<div class="impact-card">🙏 Gratitude</div>
-<div class="impact-card">🧠 Mindfulness</div>
-</div>
-</div>
-
-</div>
-
-<div class="bottom-nav">
-<div>Pulse</div>
-<div>Missions</div>
-<div>Evolve</div>
-<div>Profile</div>
-</div>
-
-<!-- FIREBASE LOGIN -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { 
+  getAuth, GoogleAuthProvider, 
+  signInWithPopup, signOut, onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  collection,
+  getDocs,
+  increment,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyD31derHPL34IJdbOeiSJ9l1n7n24maVR4",
-    authDomain: "loterica-progresso.firebaseapp.com",
-    projectId: "loterica-progresso"
+  apiKey: "AIzaSyD31derHPL34IJdbOeiSJ9l1n7n24maVR4",
+  authDomain: "loterica-progresso.firebaseapp.com",
+  projectId: "loterica-progresso"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 const greeting = document.getElementById("greeting");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const missionContainer = document.querySelector(".mission");
 
 loginBtn.onclick = () => signInWithPopup(auth, provider);
 logoutBtn.onclick = () => signOut(auth);
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        greeting.innerHTML = "Good morning, <strong>" + user.displayName + "</strong>";
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "inline-block";
-    } else {
-        greeting.innerHTML = "Welcome to HUMIVA";
-        loginBtn.style.display = "inline-block";
-        logoutBtn.style.display = "none";
-    }
-});
-</script>
+onAuthStateChanged(auth, async (user) => {
 
-</body>
-</html>
+  if (!user) {
+    greeting.innerHTML = "Welcome to HUMIVA";
+    loginBtn.style.display = "inline-block";
+    logoutBtn.style.display = "none";
+    return;
+  }
+
+  greeting.innerHTML = "Good morning, <strong>" + user.displayName + "</strong>";
+  loginBtn.style.display = "none";
+  logoutBtn.style.display = "inline-block";
+
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    await setDoc(userRef, {
+      name: user.displayName,
+      email: user.email,
+      xp: 0,
+      level: 1,
+      streak: 0,
+      lastMissionDate: null,
+      createdAt: serverTimestamp()
+    });
+  }
+
+  loadMissions();
+  loadRanking();
+});
+
+
+/* =========================
+   MISSÕES DINÂMICAS
+========================= */
+
+async function loadMissions() {
+
+  missionContainer.innerHTML = "<h3>Global Missions</h3>";
+
+  const missionsSnapshot = await getDocs(collection(db, "missions"));
+
+  missionsSnapshot.forEach((docSnap) => {
+
+    const mission = docSnap.data();
+
+    if (!mission.active) return;
+
+    const btn = document.createElement("button");
+    btn.innerText = mission.title + " (+ " + mission.xpReward + " XP)";
+    btn.onclick = () => completeMission(docSnap.id, mission.xpReward);
+
+    missionContainer.appendChild(btn);
+  });
+}
+
+
+/* =========================
+   SISTEMA DE XP + LEVEL + STREAK
+========================= */
+
+async function completeMission(missionId, xpReward) {
+
+  const user = auth.currentUser;
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+
+  const today = new Date().toDateString();
+  let newStreak = userData.streak || 0;
+
+  if (userData.lastMissionDate !== today) {
+    newStreak += 1;
+  }
+
+  await updateDoc(userRef, {
+    xp: increment(xpReward),
+    lastMissionDate: today,
+    streak: newStreak
+  });
+
+  const updatedSnap = await getDoc(userRef);
+  const xp = updatedSnap.data().xp;
+
+  const newLevel = Math.floor(xp / 100) + 1;
+
+  await updateDoc(userRef, { level: newLevel });
+
+  alert("Missão concluída!\nLevel: " + newLevel + "\nStreak: " + newStreak + " dias 🔥");
+
+  loadRanking();
+}
+
+
+/* =========================
+   RANKING GLOBAL
+========================= */
+
+async function loadRanking() {
+
+  const snapshot = await getDocs(collection(db, "users"));
+  let users = [];
+
+  snapshot.forEach((doc) => {
+    users.push(doc.data());
+  });
+
+  users.sort((a, b) => b.xp - a.xp);
+
+  let rankingDiv = document.getElementById("ranking");
+
+  if (!rankingDiv) {
+    rankingDiv = document.createElement("div");
+    rankingDiv.id = "ranking";
+    rankingDiv.style.marginTop = "30px";
+    document.querySelector(".app").appendChild(rankingDiv);
+  }
+
+  rankingDiv.innerHTML = "<h3>🏆 Global Ranking</h3>";
+
+  users.slice(0, 5).forEach((user, index) => {
+    rankingDiv.innerHTML += `
+      <div style="margin-top:8px;">
+        ${index + 1}. ${user.name} — ${user.xp} XP
+      </div>
+    `;
+  });
+}
+
+</script>
