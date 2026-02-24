@@ -1,10 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUMIVA App</title>
+
+<style>
+body {
+  background:#0f172a;
+  color:white;
+  font-family:Arial, sans-serif;
+  margin:0;
+  padding:20px;
+}
+
+.app {
+  max-width:500px;
+  margin:auto;
+}
+
+button {
+  padding:8px 15px;
+  margin-top:10px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.login-btn { background:#6366f1; color:white; }
+.logout-btn { background:#ef4444; color:white; display:none; }
+
+.mission { margin-top:20px; }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<h2>HUMIVA</h2>
+
+<div id="greeting">Carregando...</div>
+
+<button id="loginBtn" class="login-btn">Login com Google</button>
+<button id="logoutBtn" class="logout-btn">Logout</button>
+
+<div class="mission">
+<h3>Missões</h3>
+</div>
+
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-  getAuth, GoogleAuthProvider, 
-  signInWithPopup, signOut, onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 import {
   getFirestore,
@@ -18,9 +69,6 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-
-/* ================= FIREBASE INIT ================= */
-
 const firebaseConfig = {
   apiKey: "AIzaSyD31derHPL34IJdbOeiSJ9l1n7n24maVR4",
   authDomain: "loterica-progresso.firebaseapp.com",
@@ -32,153 +80,81 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
+const greeting = document.getElementById("greeting");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const missionContainer = document.querySelector(".mission");
 
-/* ================= DOM READY ================= */
+loginBtn.onclick = () => signInWithPopup(auth, provider);
+logoutBtn.onclick = () => signOut(auth);
 
-document.addEventListener("DOMContentLoaded", () => {
+onAuthStateChanged(auth, async (user) => {
 
-  const greeting = document.getElementById("greeting");
-  const loginBtn = document.getElementById("loginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  // 🔥 cria missionContainer automaticamente se não existir
-  let missionContainer = document.querySelector(".mission");
-  if (!missionContainer) {
-    missionContainer = document.createElement("div");
-    missionContainer.className = "mission";
-    document.querySelector(".app")?.appendChild(missionContainer);
+  if (!user) {
+    greeting.innerHTML = "Welcome to HUMIVA";
+    loginBtn.style.display = "inline-block";
+    logoutBtn.style.display = "none";
+    return;
   }
 
-  if (loginBtn) loginBtn.onclick = () => signInWithPopup(auth, provider);
-  if (logoutBtn) logoutBtn.onclick = () => signOut(auth);
+  greeting.innerHTML = "Good morning, <strong>" + user.displayName + "</strong>";
+  loginBtn.style.display = "none";
+  logoutBtn.style.display = "inline-block";
 
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
 
-  onAuthStateChanged(auth, async (user) => {
-
-    if (!user) {
-      if (greeting) greeting.innerHTML = "Welcome to HUMIVA";
-      if (loginBtn) loginBtn.style.display = "inline-block";
-      if (logoutBtn) logoutBtn.style.display = "none";
-      return;
-    }
-
-    if (greeting) greeting.innerHTML = "Good morning, <strong>" + user.displayName + "</strong>";
-    if (loginBtn) loginBtn.style.display = "none";
-    if (logoutBtn) logoutBtn.style.display = "inline-block";
-
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        name: user.displayName,
-        email: user.email,
-        xp: 0,
-        level: 1,
-        streak: 0,
-        lastMissionDate: null,
-        createdAt: serverTimestamp()
-      });
-    }
-
-    loadMissions(missionContainer);
-    loadRanking();
-  });
-
-
-  /* ================= MISSÕES ================= */
-
-  async function loadMissions(container) {
-
-    container.innerHTML = "<h3>Global Missions</h3>";
-
-    const snapshot = await getDocs(collection(db, "missions"));
-
-    snapshot.forEach((docSnap) => {
-
-      const mission = docSnap.data();
-      if (!mission.active) return;
-
-      const btn = document.createElement("button");
-      btn.innerText = mission.title + " (+ " + mission.xpReward + " XP)";
-      btn.style.marginTop = "10px";
-
-      btn.onclick = () => completeMission(mission.xpReward);
-
-      container.appendChild(btn);
+  if (!userSnap.exists()) {
+    await setDoc(userRef, {
+      name: user.displayName,
+      email: user.email,
+      xp: 0,
+      level: 1,
+      streak: 0,
+      lastMissionDate: null,
+      createdAt: serverTimestamp()
     });
   }
 
-
-  /* ================= XP + LEVEL + STREAK ================= */
-
-  async function completeMission(xpReward) {
-
-    const user = auth.currentUser;
-    if (!user) return alert("Faça login primeiro.");
-
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
-    const userData = userSnap.data();
-
-    const today = new Date().toDateString();
-    let newStreak = userData.streak || 0;
-
-    if (userData.lastMissionDate !== today) {
-      newStreak += 1;
-    }
-
-    await updateDoc(userRef, {
-      xp: increment(xpReward),
-      lastMissionDate: today,
-      streak: newStreak
-    });
-
-    const updatedSnap = await getDoc(userRef);
-    const xp = updatedSnap.data().xp;
-    const newLevel = Math.floor(xp / 100) + 1;
-
-    await updateDoc(userRef, { level: newLevel });
-
-    alert("Missão concluída!\nLevel: " + newLevel + "\nStreak: " + newStreak + " dias 🔥");
-
-    loadRanking();
-  }
-
-
-  /* ================= RANKING ================= */
-
-  async function loadRanking() {
-
-    const snapshot = await getDocs(collection(db, "users"));
-    let users = [];
-
-    snapshot.forEach((doc) => {
-      users.push(doc.data());
-    });
-
-    users.sort((a, b) => b.xp - a.xp);
-
-    let rankingDiv = document.getElementById("ranking");
-
-    if (!rankingDiv) {
-      rankingDiv = document.createElement("div");
-      rankingDiv.id = "ranking";
-      rankingDiv.style.marginTop = "30px";
-      document.querySelector(".app")?.appendChild(rankingDiv);
-    }
-
-    rankingDiv.innerHTML = "<h3>🏆 Global Ranking</h3>";
-
-    users.slice(0, 5).forEach((user, index) => {
-      rankingDiv.innerHTML += `
-        <div style="margin-top:8px;">
-          ${index + 1}. ${user.name} — ${user.xp} XP
-        </div>
-      `;
-    });
-  }
-
+  loadMissions();
 });
 
+
+async function loadMissions() {
+
+  missionContainer.innerHTML = "<h3>Missões</h3>";
+
+  const snapshot = await getDocs(collection(db, "missions"));
+
+  snapshot.forEach((docSnap) => {
+
+    const mission = docSnap.data();
+    if (!mission.active) return;
+
+    const btn = document.createElement("button");
+    btn.innerText = mission.title + " (+ " + mission.xpReward + " XP)";
+    btn.onclick = () => completeMission(mission.xpReward);
+
+    missionContainer.appendChild(btn);
+  });
+}
+
+
+async function completeMission(xpReward) {
+
+  const user = auth.currentUser;
+  if (!user) return alert("Faça login primeiro.");
+
+  const userRef = doc(db, "users", user.uid);
+
+  await updateDoc(userRef, {
+    xp: increment(xpReward)
+  });
+
+  alert("Missão concluída!");
+}
+
 </script>
+
+</body>
+</html>
