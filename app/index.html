@@ -40,29 +40,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const greeting = document.getElementById("greeting");
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
-  const missionContainer = document.querySelector(".mission");
 
-  if (!greeting || !loginBtn || !logoutBtn || !missionContainer) {
-    console.error("Elementos do DOM não encontrados.");
-    return;
+  // 🔥 cria missionContainer automaticamente se não existir
+  let missionContainer = document.querySelector(".mission");
+  if (!missionContainer) {
+    missionContainer = document.createElement("div");
+    missionContainer.className = "mission";
+    document.querySelector(".app")?.appendChild(missionContainer);
   }
 
-  loginBtn.onclick = () => signInWithPopup(auth, provider);
-  logoutBtn.onclick = () => signOut(auth);
+  if (loginBtn) loginBtn.onclick = () => signInWithPopup(auth, provider);
+  if (logoutBtn) logoutBtn.onclick = () => signOut(auth);
 
 
   onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
-      greeting.innerHTML = "Welcome to HUMIVA";
-      loginBtn.style.display = "inline-block";
-      logoutBtn.style.display = "none";
+      if (greeting) greeting.innerHTML = "Welcome to HUMIVA";
+      if (loginBtn) loginBtn.style.display = "inline-block";
+      if (logoutBtn) logoutBtn.style.display = "none";
       return;
     }
 
-    greeting.innerHTML = "Good morning, <strong>" + user.displayName + "</strong>";
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "inline-block";
+    if (greeting) greeting.innerHTML = "Good morning, <strong>" + user.displayName + "</strong>";
+    if (loginBtn) loginBtn.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "inline-block";
 
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
@@ -163,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rankingDiv = document.createElement("div");
       rankingDiv.id = "ranking";
       rankingDiv.style.marginTop = "30px";
-      document.querySelector(".app").appendChild(rankingDiv);
+      document.querySelector(".app")?.appendChild(rankingDiv);
     }
 
     rankingDiv.innerHTML = "<h3>🏆 Global Ranking</h3>";
