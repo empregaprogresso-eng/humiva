@@ -1,249 +1,123 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUMIVA - We Are The Upgrade</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a0f1f">
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<title>HUMIVA App</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter', sans-serif;
-}
-
 body{
-background: radial-gradient(circle at top,#14182e,#0a0f1f 70%);
+margin:0;
+font-family:Inter, sans-serif;
+background:linear-gradient(135deg,#0a0f1f,#14182e);
 color:white;
-position:relative;
-overflow-x:hidden;
+padding:20px;
 }
 
-/* SUBTLE SPHERE WATERMARK */
-body::before{
-content:"";
-position:fixed;
-top:50%;
-left:50%;
-width:800px;
-height:800px;
-transform:translate(-50%,-50%);
-background:url("icon-512.png") no-repeat center;
-background-size:contain;
-opacity:0.05;
-filter: drop-shadow(0 0 120px rgba(155,93,229,0.6));
-pointer-events:none;
-z-index:0;
-}
-
-/* PURPLE LIGHT RAYS */
-body::after{
-content:"";
-position:fixed;
-top:50%;
-left:50%;
-width:1000px;
-height:1000px;
-transform:translate(-50%,-50%);
-background: radial-gradient(circle, rgba(155,93,229,0.15) 0%, rgba(106,0,244,0.05) 40%, transparent 70%);
-pointer-events:none;
-z-index:0;
-}
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:25px 10%;
-position:relative;
-z-index:1;
-}
-
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-family:'Orbitron', sans-serif;
-font-size:26px;
-letter-spacing:2px;
-}
-
-.logo img{
-width:28px;
-height:28px;
-}
-
-nav a{
-margin-left:25px;
-text-decoration:none;
-color:#aaa;
-font-weight:400;
-transition:0.3s;
-}
-
-nav a:hover{
-color:#00f5d4;
-}
-
-/* SOCIAL STYLE DOWNLOAD LINK */
-.app-link{
-margin-left:25px;
-color:#00f5d4;
-font-weight:500;
-text-decoration:none;
-opacity:0.8;
-transition:0.3s;
-}
-
-.app-link:hover{
-opacity:1;
-}
-
-.hero{
+h1{
 text-align:center;
-padding:140px 20px 120px 20px;
-position:relative;
-z-index:1;
-}
-
-.hero h1{
-font-family:'Orbitron', sans-serif;
-font-size:52px;
-margin-bottom:20px;
-}
-
-.hero span{
-color:#00f5d4;
-}
-
-.hero p{
-max-width:750px;
-margin:auto;
-font-size:18px;
-color:#bbb;
-line-height:1.6;
-}
-
-.btn-primary{
-margin-top:45px;
-padding:15px 35px;
-border:none;
-border-radius:30px;
-background:linear-gradient(90deg,#00f5d4,#9b5de5);
-color:black;
-font-weight:600;
-cursor:pointer;
-transition:0.3s;
-}
-
-.btn-primary:hover{
-transform:scale(1.04);
-}
-
-.section{
-padding:110px 10%;
-text-align:center;
-position:relative;
-z-index:1;
-}
-
-.section h2{
-font-size:34px;
-margin-bottom:25px;
-}
-
-.pillars{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:30px;
-margin-top:50px;
+font-family:Orbitron, sans-serif;
 }
 
 .card{
-background:rgba(255,255,255,0.04);
-padding:35px;
-border-radius:18px;
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+}
+
+button{
+margin-top:10px;
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:linear-gradient(90deg,#00f5d4,#9b5de5);
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+.progress{
+margin-top:10px;
+height:10px;
+background:#222;
+border-radius:10px;
+overflow:hidden;
+}
+
+.progress-bar{
+height:100%;
+background:#00f5d4;
+width:0%;
 transition:0.3s;
-}
-
-.card:hover{
-background:rgba(255,255,255,0.08);
-transform:translateY(-6px);
-}
-
-footer{
-padding:60px 20px;
-text-align:center;
-font-size:14px;
-color:#666;
-position:relative;
-z-index:1;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">
-<img src="icon-192.png">
-HUMIVA
-</div>
-<nav>
-<a href="#">About</a>
-<a href="#">Pulse</a>
-<a href="#">Missions</a>
-<a href="#">Join</a>
-<a href="/app/index.html" class="app-link">Get the App</a>
-</nav>
-</header>
+<h1>HUMIVA</h1>
 
-<section class="hero">
-<h1>We Are The <span>Upgrade</span></h1>
-<p>
-A global movement for human evolution.
-Psychology. Consciousness. Performance. Impact.
-</p>
-<button class="btn-primary">Join The Movement</button>
-</section>
-
-<section class="section">
-<h2>Global Pulse</h2>
-<p>Real-time emotional temperature of humanity.</p>
-</section>
-
-<section class="section">
-<h2>Our 5 Evolution Pillars</h2>
-<div class="pillars">
-<div class="card">🧠 Mind</div>
-<div class="card">✨ Consciousness</div>
-<div class="card">⚡ Energy</div>
-<div class="card">🤝 Connection</div>
-<div class="card">🌍 Impact</div>
-</div>
-</section>
-
-<section class="section">
-<h2>Next Global Mission</h2>
+<div class="card">
+<h2>🌍 Global Mission</h2>
 <p>24h Without Complaining</p>
-<button class="btn-primary">Join Mission</button>
-</section>
+<button onclick="completeMission()">I Completed</button>
+</div>
 
-<footer>
-© 2026 HUMIVA — Humanity in Evolution.
-</footer>
+<div class="card">
+<h2>🧠 Your Evolution</h2>
+<p>Level: <span id="level">1</span></p>
+<p>XP: <span id="xp">0</span>/100</p>
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔥 Global Impact</h2>
+<p>Total Actions Today:</p>
+<h3 id="globalCount">0</h3>
+</div>
 
 <script>
-if ('serviceWorker' in navigator') {
-navigator.serviceWorker.register('/sw.js');
+
+// Load data
+let xp = localStorage.getItem("xp") || 0;
+let level = localStorage.getItem("level") || 1;
+let globalCount = localStorage.getItem("globalCount") || 0;
+
+xp = parseInt(xp);
+level = parseInt(level);
+globalCount = parseInt(globalCount);
+
+updateUI();
+
+function completeMission(){
+
+xp += 20;
+globalCount += 1;
+
+if(xp >= 100){
+level += 1;
+xp = 0;
+alert("Level Up! You evolved.");
 }
+
+localStorage.setItem("xp", xp);
+localStorage.setItem("level", level);
+localStorage.setItem("globalCount", globalCount);
+
+updateUI();
+}
+
+function updateUI(){
+document.getElementById("xp").innerText = xp;
+document.getElementById("level").innerText = level;
+document.getElementById("globalCount").innerText = globalCount;
+
+document.getElementById("progressBar").style.width = xp + "%";
+}
+
 </script>
 
 </body>
