@@ -1,4 +1,20 @@
+
 <script type="module">
+  document.addEventListener("DOMContentLoaded", () => {
+
+  const greeting = document.getElementById("greeting");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (!loginBtn || !logoutBtn) {
+    console.error("Elementos de login não encontrados.");
+    return;
+  }
+
+  loginBtn.onclick = () => signInWithPopup(auth, provider);
+  logoutBtn.onclick = () => signOut(auth);
+
+});
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { 
   getAuth, GoogleAuthProvider, 
