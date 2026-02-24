@@ -1,123 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HUMIVA App</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{
-margin:0;
-font-family:Inter, sans-serif;
-background:linear-gradient(135deg,#0a0f1f,#14182e);
-color:white;
-padding:20px;
-}
-
-h1{
-text-align:center;
-font-family:Orbitron, sans-serif;
-}
-
-.card{
-background:rgba(255,255,255,0.05);
-padding:20px;
-border-radius:15px;
-margin-top:20px;
-}
-
-button{
-margin-top:10px;
-padding:10px 20px;
-border:none;
-border-radius:20px;
-background:linear-gradient(90deg,#00f5d4,#9b5de5);
-color:black;
-font-weight:bold;
-cursor:pointer;
-}
-
-.progress{
-margin-top:10px;
-height:10px;
-background:#222;
-border-radius:10px;
-overflow:hidden;
-}
-
-.progress-bar{
-height:100%;
-background:#00f5d4;
-width:0%;
-transition:0.3s;
-}
+body{margin:0;font-family:'Inter',sans-serif;background:linear-gradient(180deg,#0b1020,#121a2f);color:white;}
+.container{max-width:900px;margin:auto;padding:40px 20px;}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;}
+.logo{font-weight:700;font-size:20px;letter-spacing:1px;}
+button{padding:10px 18px;border:none;border-radius:8px;background:#6366f1;color:white;font-weight:600;cursor:pointer;}
+.card{background:#1c243a;padding:25px;border-radius:16px;margin-bottom:20px;}
+.mission{display:flex;justify-content:space-between;align-items:center;margin-top:15px;}
+.progress{height:8px;background:#2a324a;border-radius:10px;margin-top:10px;overflow:hidden;}
+.bar{height:100%;background:#6366f1;width:0%;transition:0.3s;}
+.small{color:#9ca3af;font-size:14px;}
+.hidden{display:none;}
 </style>
 </head>
 
 <body>
 
-<h1>HUMIVA</h1>
+<div class="container">
+
+<header>
+<div class="logo">HUMIVA</div>
+<div id="authArea">
+<button onclick="login()">Login com Google</button>
+</div>
+</header>
+
+<div id="appArea" class="hidden">
 
 <div class="card">
-<h2>🌍 Global Mission</h2>
-<p>24h Without Complaining</p>
-<button onclick="completeMission()">I Completed</button>
+<h2>Bem-vindo, <span id="userName"></span></h2>
+<p class="small">Nível <span id="level">1</span></p>
+<div class="progress"><div class="bar" id="xpBar"></div></div>
+<p class="small"><span id="xp">0</span>/100 XP</p>
 </div>
 
 <div class="card">
-<h2>🧠 Your Evolution</h2>
-<p>Level: <span id="level">1</span></p>
-<p>XP: <span id="xp">0</span>/100</p>
-<div class="progress">
-<div class="progress-bar" id="progressBar"></div>
+<h2>Missões de Hoje</h2>
+<div id="missionsList"></div>
+</div>
+
 </div>
 </div>
 
-<div class="card">
-<h2>🔥 Global Impact</h2>
-<p>Total Actions Today:</p>
-<h3 id="globalCount">0</h3>
-</div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
 <script>
+const firebaseConfig = {
+  apiKey: "COLE_AQUI",
+  authDomain: "COLE_AQUI",
+  projectId: "COLE_AQUI",
+  storageBucket: "COLE_AQUI",
+  messagingSenderId: "COLE_AQUI",
+  appId: "COLE_AQUI"
+};
 
-// Load data
-let xp = localStorage.getItem("xp") || 0;
-let level = localStorage.getItem("level") || 1;
-let globalCount = localStorage.getItem("globalCount") || 0;
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
 
-xp = parseInt(xp);
-level = parseInt(level);
-globalCount = parseInt(globalCount);
+function login(){ auth.signInWithPopup(provider); }
 
-updateUI();
-
-function completeMission(){
-
-xp += 20;
-globalCount += 1;
-
-if(xp >= 100){
-level += 1;
-xp = 0;
-alert("Level Up! You evolved.");
+auth.onAuthStateChanged(function(user){
+if(user){
+document.getElementById("authArea").classList.add("hidden");
+document.getElementById("appArea").classList.remove("hidden");
+document.getElementById("userName").innerText = user.displayName;
+loadUserData();
 }
+});
 
-localStorage.setItem("xp", xp);
-localStorage.setItem("level", level);
-localStorage.setItem("globalCount", globalCount);
+let xp = parseInt(localStorage.getItem("xp")) || 0;
+let level = parseInt(localStorage.getItem("level")) || 1;
 
-updateUI();
-}
+const missions = [
+"24h sem reclamar",
+"Ajudar alguém hoje",
+"10 minutos de silêncio",
+"Enviar mensagem de gratidão",
+"1h sem redes sociais"
+];
+
+function loadUserData(){ updateUI(); renderMissions(); }
 
 function updateUI(){
 document.getElementById("xp").innerText = xp;
 document.getElementById("level").innerText = level;
-document.getElementById("globalCount").innerText = globalCount;
-
-document.getElementById("progressBar").style.width = xp + "%";
+document.getElementById("xpBar").style.width = xp + "%";
 }
 
+function completeMission(){
+xp += 20;
+if(xp >= 100){ level++; xp = 0; alert("Você evoluiu! 🚀"); }
+localStorage.setItem("xp", xp);
+localStorage.setItem("level", level);
+updateUI();
+}
+
+function renderMissions(){
+const list = document.getElementById("missionsList");
+list.innerHTML = "";
+missions.sort(() => 0.5 - Math.random()).slice(0,3).forEach(m => {
+const div = document.createElement("div");
+div.className = "mission";
+div.innerHTML = `<span>${m}</span><button onclick="completeMission()">Completar</button>`;
+list.appendChild(div);
+});
+}
 </script>
 
 </body>
