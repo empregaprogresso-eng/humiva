@@ -3,34 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUMIVA App</title>
+<title>HUMIVA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-  background:#0f172a;
-  color:white;
-  font-family:Arial, sans-serif;
-  margin:0;
-  padding:20px;
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+
+body{
+background:radial-gradient(circle at top,#0f172a,#020617 70%);
+color:white;
+min-height:100vh;
+display:flex;
+justify-content:center;
 }
 
-.app {
-  max-width:500px;
-  margin:auto;
+.app{
+width:100%;
+max-width:430px;
+padding:20px;
+padding-bottom:100px;
 }
 
-button {
-  padding:8px 15px;
-  margin-top:10px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
+/* HEADER */
+
+.header{
+text-align:center;
+margin-bottom:25px;
 }
 
-.login-btn { background:#6366f1; color:white; }
-.logout-btn { background:#ef4444; color:white; display:none; }
+.logo{
+font-size:28px;
+font-weight:700;
+letter-spacing:4px;
+}
 
-.mission { margin-top:20px; }
+.subtitle{
+font-size:12px;
+color:#94a3b8;
+margin-top:5px;
+}
+
+/* GREETING */
+
+#greeting{
+margin-top:20px;
+font-size:18px;
+color:#cbd5e1;
+}
+
+/* GLASS CARD */
+
+.card{
+margin-top:20px;
+padding:20px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+position:relative;
+overflow:hidden;
+}
+
+/* ESFERA */
+
+.sphere{
+position:absolute;
+right:-40px;
+top:-40px;
+width:180px;
+height:180px;
+border-radius:50%;
+background:radial-gradient(circle at 30% 30%,#60a5fa,#7c3aed 70%);
+box-shadow:0 0 40px #7c3aed,0 0 80px rgba(124,58,237,0.5);
+animation:rotate 12s linear infinite;
+opacity:0.9;
+}
+
+@keyframes rotate{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
+
+/* MISSIONS */
+
+.mission-btn{
+margin-top:12px;
+padding:12px;
+width:100%;
+border:none;
+border-radius:14px;
+background:linear-gradient(90deg,#6366f1,#7c3aed);
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+/* PROGRESS */
+
+.progress-bar{
+height:8px;
+background:rgba(255,255,255,0.1);
+border-radius:20px;
+margin-top:10px;
+overflow:hidden;
+}
+
+.progress-fill{
+height:100%;
+background:linear-gradient(90deg,#60a5fa,#a855f7);
+width:0%;
+transition:0.5s;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:rgba(15,23,42,0.95);
+display:flex;
+justify-content:space-around;
+padding:15px 0;
+border-top:1px solid rgba(255,255,255,0.05);
+}
+
+.bottom-nav div{
+font-size:12px;
+color:#94a3b8;
+}
+
+.login-btn{
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:12px;
+background:#6366f1;
+color:white;
+cursor:pointer;
+}
+
+.logout-btn{
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:12px;
+background:#ef4444;
+color:white;
+cursor:pointer;
+display:none;
+}
 </style>
 </head>
 
@@ -38,17 +161,44 @@ button {
 
 <div class="app">
 
-<h2>HUMIVA</h2>
-
-<div id="greeting">Carregando...</div>
-
-<button id="loginBtn" class="login-btn">Login com Google</button>
-<button id="logoutBtn" class="logout-btn">Logout</button>
-
-<div class="mission">
-<h3>Missões</h3>
+<div class="header">
+<div class="logo">HUMIVA</div>
+<div class="subtitle">The Human Evolution Network</div>
 </div>
 
+<div id="greeting">Checking authentication...</div>
+
+<button id="loginBtn" class="login-btn">Login with Google</button>
+<button id="logoutBtn" class="logout-btn">Logout</button>
+
+<div class="card">
+<div class="sphere"></div>
+<h3>Global Temperature</h3>
+<p style="margin-top:10px;">Anxiety 72° • Purpose 44° • Loneliness 61°</p>
+</div>
+
+<div class="card">
+<h3>Global Missions</h3>
+<div id="missions"></div>
+</div>
+
+<div class="card">
+<h3>Your Evolution</h3>
+<div id="levelInfo">Level 1</div>
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+</div>
+
+<div id="ranking" class="card"></div>
+
+</div>
+
+<div class="bottom-nav">
+<div>Pulse</div>
+<div>Missions</div>
+<div>Evolve</div>
+<div>Profile</div>
 </div>
 
 <script type="module">
@@ -83,75 +233,86 @@ const provider = new GoogleAuthProvider();
 const greeting = document.getElementById("greeting");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
-const missionContainer = document.querySelector(".mission");
+const missionsDiv = document.getElementById("missions");
+const levelInfo = document.getElementById("levelInfo");
+const progressFill = document.getElementById("progressFill");
 
 loginBtn.onclick = () => signInWithPopup(auth, provider);
 logoutBtn.onclick = () => signOut(auth);
 
 onAuthStateChanged(auth, async (user) => {
 
-  if (!user) {
-    greeting.innerHTML = "Welcome to HUMIVA";
-    loginBtn.style.display = "inline-block";
-    logoutBtn.style.display = "none";
-    return;
-  }
-
-  greeting.innerHTML = "Good morning, <strong>" + user.displayName + "</strong>";
-  loginBtn.style.display = "none";
-  logoutBtn.style.display = "inline-block";
-
-  const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
-
-  if (!userSnap.exists()) {
-    await setDoc(userRef, {
-      name: user.displayName,
-      email: user.email,
-      xp: 0,
-      level: 1,
-      streak: 0,
-      lastMissionDate: null,
-      createdAt: serverTimestamp()
-    });
-  }
-
-  loadMissions();
-});
-
-
-async function loadMissions() {
-
-  missionContainer.innerHTML = "<h3>Missões</h3>";
-
-  const snapshot = await getDocs(collection(db, "missions"));
-
-  snapshot.forEach((docSnap) => {
-
-    const mission = docSnap.data();
-    if (!mission.active) return;
-
-    const btn = document.createElement("button");
-    btn.innerText = mission.title + " (+ " + mission.xpReward + " XP)";
-    btn.onclick = () => completeMission(mission.xpReward);
-
-    missionContainer.appendChild(btn);
-  });
+if(!user){
+greeting.innerHTML="Welcome to HUMIVA";
+loginBtn.style.display="block";
+logoutBtn.style.display="none";
+return;
 }
 
+greeting.innerHTML="Good morning, <strong>"+user.displayName+"</strong>";
+loginBtn.style.display="none";
+logoutBtn.style.display="block";
 
-async function completeMission(xpReward) {
+const userRef = doc(db,"users",user.uid);
+const snap = await getDoc(userRef);
 
-  const user = auth.currentUser;
-  if (!user) return alert("Faça login primeiro.");
+if(!snap.exists()){
+await setDoc(userRef,{
+name:user.displayName,
+xp:0,
+level:1,
+createdAt:serverTimestamp()
+});
+}
 
-  const userRef = doc(db, "users", user.uid);
+loadUserData();
+loadMissions();
+loadRanking();
+});
 
-  await updateDoc(userRef, {
-    xp: increment(xpReward)
-  });
+async function loadUserData(){
+const user = auth.currentUser;
+const snap = await getDoc(doc(db,"users",user.uid));
+const data = snap.data();
+levelInfo.innerText="Level "+data.level;
+progressFill.style.width=(data.xp % 100)+"%";
+}
 
-  alert("Missão concluída!");
+async function loadMissions(){
+missionsDiv.innerHTML="";
+const snapshot = await getDocs(collection(db,"missions"));
+snapshot.forEach(docSnap=>{
+const mission = docSnap.data();
+if(!mission.active) return;
+const btn=document.createElement("button");
+btn.className="mission-btn";
+btn.innerText=mission.title+" (+ "+mission.xpReward+" XP)";
+btn.onclick=()=>completeMission(mission.xpReward);
+missionsDiv.appendChild(btn);
+});
+}
+
+async function completeMission(xpReward){
+const user=auth.currentUser;
+const ref=doc(db,"users",user.uid);
+await updateDoc(ref,{xp:increment(xpReward)});
+alert("Mission Completed 🚀");
+loadUserData();
+loadRanking();
+}
+
+async function loadRanking(){
+const snapshot=await getDocs(collection(db,"users"));
+let users=[];
+snapshot.forEach(doc=>users.push(doc.data()));
+users.sort((a,b)=>b.xp-a.xp);
+
+const ranking=document.getElementById("ranking");
+ranking.innerHTML="<h3>🏆 Global Ranking</h3>";
+
+users.slice(0,5).forEach((u,i)=>{
+ranking.innerHTML+=`<p>${i+1}. ${u.name} — ${u.xp} XP</p>`;
+});
 }
 
 </script>
