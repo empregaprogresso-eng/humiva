@@ -1,121 +1,168 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUMIVA App</title>
+<title>HUMIVA — We Are The Upgrade</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:'Inter',sans-serif;background:linear-gradient(180deg,#0b1020,#121a2f);color:white;}
-.container{max-width:900px;margin:auto;padding:40px 20px;}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;}
-.logo{font-weight:700;font-size:20px;letter-spacing:1px;}
-button{padding:10px 18px;border:none;border-radius:8px;background:#6366f1;color:white;font-weight:600;cursor:pointer;}
-.card{background:#1c243a;padding:25px;border-radius:16px;margin-bottom:20px;}
-.mission{display:flex;justify-content:space-between;align-items:center;margin-top:15px;}
-.progress{height:8px;background:#2a324a;border-radius:10px;margin-top:10px;overflow:hidden;}
-.bar{height:100%;background:#6366f1;width:0%;transition:0.3s;}
-.small{color:#9ca3af;font-size:14px;}
-.hidden{display:none;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 10%;
+}
+
+.logo{
+font-weight:700;
+font-size:20px;
+letter-spacing:2px;
+}
+
+nav a{
+margin-left:25px;
+text-decoration:none;
+color:#94a3b8;
+transition:0.3s;
+}
+
+nav a:hover{
+color:white;
+}
+
+.hero{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.hero h1{
+font-size:48px;
+font-weight:700;
+margin-bottom:20px;
+}
+
+.hero span{
+color:#6366f1;
+}
+
+.hero p{
+max-width:700px;
+font-size:18px;
+color:#cbd5e1;
+line-height:1.6;
+margin-bottom:40px;
+}
+
+.btn-primary{
+padding:14px 30px;
+border-radius:8px;
+border:none;
+background:#6366f1;
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+text-decoration:none;
+}
+
+.btn-primary:hover{
+background:#4f46e5;
+}
+
+.section{
+padding:100px 10%;
+text-align:center;
+}
+
+.section h2{
+font-size:32px;
+margin-bottom:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+.card{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+color:#cbd5e1;
+}
+
+footer{
+padding:40px;
+text-align:center;
+font-size:14px;
+color:#64748b;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
 <header>
 <div class="logo">HUMIVA</div>
-<div id="authArea">
-<button onclick="login()">Login com Google</button>
-</div>
+<nav>
+<a href="#sobre">Sobre</a>
+<a href="#pilares">Pilares</a>
+<a href="/aplicativo/">Entrar no App</a>
+</nav>
 </header>
 
-<div id="appArea" class="hidden">
+<section class="hero">
+<h1>We Are The <span>Upgrade</span></h1>
+<p>
+HUMIVA é uma rede global de evolução humana.
+Missões diárias. Impacto coletivo.
+Consciência em ação.
+</p>
 
-<div class="card">
-<h2>Bem-vindo, <span id="userName"></span></h2>
-<p class="small">Nível <span id="level">1</span></p>
-<div class="progress"><div class="bar" id="xpBar"></div></div>
-<p class="small"><span id="xp">0</span>/100 XP</p>
+<a href="/aplicativo/" class="btn-primary">
+Entrar no App
+</a>
+</section>
+
+<section id="pilares" class="section">
+<h2>Os 5 Pilares da Evolução</h2>
+
+<div class="cards">
+<div class="card">🧠 Mentalidade</div>
+<div class="card">✨ Consciência</div>
+<div class="card">⚡ Energia</div>
+<div class="card">🤝 Conexão</div>
+<div class="card">🌍 Impacto</div>
 </div>
+</section>
 
-<div class="card">
-<h2>Missões de Hoje</h2>
-<div id="missionsList"></div>
-</div>
-
-</div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "COLE_AQUI",
-  authDomain: "COLE_AQUI",
-  projectId: "COLE_AQUI",
-  storageBucket: "COLE_AQUI",
-  messagingSenderId: "COLE_AQUI",
-  appId: "COLE_AQUI"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
-
-function login(){ auth.signInWithPopup(provider); }
-
-auth.onAuthStateChanged(function(user){
-if(user){
-document.getElementById("authArea").classList.add("hidden");
-document.getElementById("appArea").classList.remove("hidden");
-document.getElementById("userName").innerText = user.displayName;
-loadUserData();
-}
-});
-
-let xp = parseInt(localStorage.getItem("xp")) || 0;
-let level = parseInt(localStorage.getItem("level")) || 1;
-
-const missions = [
-"24h sem reclamar",
-"Ajudar alguém hoje",
-"10 minutos de silêncio",
-"Enviar mensagem de gratidão",
-"1h sem redes sociais"
-];
-
-function loadUserData(){ updateUI(); renderMissions(); }
-
-function updateUI(){
-document.getElementById("xp").innerText = xp;
-document.getElementById("level").innerText = level;
-document.getElementById("xpBar").style.width = xp + "%";
-}
-
-function completeMission(){
-xp += 20;
-if(xp >= 100){ level++; xp = 0; alert("Você evoluiu! 🚀"); }
-localStorage.setItem("xp", xp);
-localStorage.setItem("level", level);
-updateUI();
-}
-
-function renderMissions(){
-const list = document.getElementById("missionsList");
-list.innerHTML = "";
-missions.sort(() => 0.5 - Math.random()).slice(0,3).forEach(m => {
-const div = document.createElement("div");
-div.className = "mission";
-div.innerHTML = `<span>${m}</span><button onclick="completeMission()">Completar</button>`;
-list.appendChild(div);
-});
-}
-</script>
+<footer>
+© 2026 HUMIVA — Humanity in Evolution
+</footer>
 
 </body>
 </html>
