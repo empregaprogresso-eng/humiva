@@ -11,40 +11,57 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-background:radial-gradient(circle at top,#0f172a,#020617 70%);
-color:white;
-min-height:100vh;
+background:radial-gradient(circle at top,#111827,#020617 70%);
 display:flex;
 justify-content:center;
+align-items:center;
+min-height:100vh;
 }
 
-.app{
-width:100%;
-max-width:430px;
-padding:20px;
-padding-bottom:100px;
+/* ===== APP MOBILE CONTAINER ===== */
+
+.app-wrapper{
+width:390px;
+height:780px;
+background:linear-gradient(180deg,#0f172a,#020617);
+border-radius:40px;
+box-shadow:0 0 80px rgba(124,58,237,0.4);
+overflow:hidden;
+position:relative;
+display:flex;
+flex-direction:column;
+padding:25px;
+}
+
+/* LOGO LATERAL */
+
+.side-logo{
+position:absolute;
+right:-55px;
+top:50%;
+transform:rotate(90deg) translateY(-50%);
+transform-origin:right top;
+font-size:28px;
+font-weight:700;
+letter-spacing:6px;
+color:rgba(255,255,255,0.08);
 }
 
 /* HEADER */
 
-.header{
-text-align:center;
-margin-bottom:25px;
-}
-
 .logo{
-font-size:28px;
+font-size:26px;
 font-weight:700;
 letter-spacing:4px;
+text-align:center;
 }
 
 .subtitle{
-font-size:12px;
+font-size:11px;
 color:#94a3b8;
+text-align:center;
 margin-top:5px;
 }
-
-/* GREETING */
 
 #greeting{
 margin-top:20px;
@@ -70,13 +87,12 @@ overflow:hidden;
 position:absolute;
 right:-40px;
 top:-40px;
-width:180px;
-height:180px;
+width:170px;
+height:170px;
 border-radius:50%;
 background:radial-gradient(circle at 30% 30%,#60a5fa,#7c3aed 70%);
-box-shadow:0 0 40px #7c3aed,0 0 80px rgba(124,58,237,0.5);
-animation:rotate 12s linear infinite;
-opacity:0.9;
+box-shadow:0 0 40px #7c3aed,0 0 100px rgba(124,58,237,0.6);
+animation:rotate 15s linear infinite;
 }
 
 @keyframes rotate{
@@ -84,27 +100,23 @@ from{transform:rotate(0deg);}
 to{transform:rotate(360deg);}
 }
 
-/* MISSIONS */
-
 .mission-btn{
 margin-top:12px;
-padding:12px;
+padding:14px;
 width:100%;
 border:none;
-border-radius:14px;
+border-radius:16px;
 background:linear-gradient(90deg,#6366f1,#7c3aed);
 color:white;
 font-weight:600;
 cursor:pointer;
 }
 
-/* PROGRESS */
-
 .progress-bar{
 height:8px;
 background:rgba(255,255,255,0.1);
 border-radius:20px;
-margin-top:10px;
+margin-top:12px;
 overflow:hidden;
 }
 
@@ -115,17 +127,32 @@ width:0%;
 transition:0.5s;
 }
 
+/* BOTÕES LOGIN */
+
+.login-btn, .logout-btn{
+margin-top:12px;
+padding:10px;
+border:none;
+border-radius:12px;
+font-weight:600;
+cursor:pointer;
+}
+
+.login-btn{background:#6366f1;color:white;}
+.logout-btn{background:#ef4444;color:white;display:none;}
+
 /* BOTTOM NAV */
 
 .bottom-nav{
-position:fixed;
+position:absolute;
 bottom:0;
 left:0;
 right:0;
+height:70px;
 background:rgba(15,23,42,0.95);
 display:flex;
 justify-content:space-around;
-padding:15px 0;
+align-items:center;
 border-top:1px solid rgba(255,255,255,0.05);
 }
 
@@ -133,38 +160,16 @@ border-top:1px solid rgba(255,255,255,0.05);
 font-size:12px;
 color:#94a3b8;
 }
-
-.login-btn{
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:12px;
-background:#6366f1;
-color:white;
-cursor:pointer;
-}
-
-.logout-btn{
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:12px;
-background:#ef4444;
-color:white;
-cursor:pointer;
-display:none;
-}
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="app-wrapper">
+<div class="side-logo">HUMIVA</div>
 
-<div class="header">
 <div class="logo">HUMIVA</div>
 <div class="subtitle">The Human Evolution Network</div>
-</div>
 
 <div id="greeting">Checking authentication...</div>
 
@@ -192,8 +197,6 @@ display:none;
 
 <div id="ranking" class="card"></div>
 
-</div>
-
 <div class="bottom-nav">
 <div>Pulse</div>
 <div>Missions</div>
@@ -201,22 +204,16 @@ display:none;
 <div>Profile</div>
 </div>
 
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
 import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  collection,
-  getDocs,
-  increment,
-  serverTimestamp
+  getFirestore, doc, setDoc, getDoc, updateDoc,
+  collection, getDocs, increment, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -296,7 +293,6 @@ async function completeMission(xpReward){
 const user=auth.currentUser;
 const ref=doc(db,"users",user.uid);
 await updateDoc(ref,{xp:increment(xpReward)});
-alert("Mission Completed 🚀");
 loadUserData();
 loadRanking();
 }
@@ -309,7 +305,6 @@ users.sort((a,b)=>b.xp-a.xp);
 
 const ranking=document.getElementById("ranking");
 ranking.innerHTML="<h3>🏆 Global Ranking</h3>";
-
 users.slice(0,5).forEach((u,i)=>{
 ranking.innerHTML+=`<p>${i+1}. ${u.name} — ${u.xp} XP</p>`;
 });
