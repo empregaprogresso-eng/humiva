@@ -11,43 +11,37 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-background:radial-gradient(circle at top,#111827,#020617 70%);
+background:linear-gradient(180deg,#1e3a8a,#312e81);
 display:flex;
 justify-content:center;
 align-items:center;
 min-height:100vh;
+color:white;
 }
-
-/* ===== APP MOBILE CONTAINER ===== */
 
 .app-wrapper{
 width:390px;
 height:780px;
-background:linear-gradient(180deg,#0f172a,#020617);
 border-radius:40px;
-box-shadow:0 0 80px rgba(124,58,237,0.4);
 overflow:hidden;
+background:linear-gradient(180deg,#2563eb,#1e40af 40%,#0f172a);
+box-shadow:0 0 100px rgba(99,102,241,0.6);
 position:relative;
 display:flex;
 flex-direction:column;
 padding:25px;
 }
 
-/* LOGO LATERAL */
-
 .side-logo{
 position:absolute;
 right:-55px;
 top:50%;
 transform:rotate(90deg) translateY(-50%);
-transform-origin:right top;
 font-size:28px;
 font-weight:700;
 letter-spacing:6px;
-color:rgba(255,255,255,0.08);
+color:rgba(255,255,255,0.1);
 }
-
-/* HEADER */
 
 .logo{
 font-size:26px;
@@ -58,55 +52,40 @@ text-align:center;
 
 .subtitle{
 font-size:11px;
-color:#94a3b8;
+color:#cbd5e1;
 text-align:center;
 margin-top:5px;
 }
 
-#greeting{
-margin-top:20px;
-font-size:18px;
-color:#cbd5e1;
+.screen{
+flex:1;
+overflow-y:auto;
 }
-
-/* GLASS CARD */
 
 .card{
-margin-top:20px;
+background:linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08));
+border-radius:22px;
 padding:20px;
+margin-top:20px;
+box-shadow:0 0 40px rgba(124,58,237,0.4);
+}
+
+.main-mission{
+background:linear-gradient(90deg,#3b82f6,#7c3aed);
+padding:18px;
 border-radius:20px;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(15px);
-position:relative;
-overflow:hidden;
+margin-top:20px;
+font-size:20px;
+font-weight:600;
 }
 
-/* ESFERA */
-
-.sphere{
-position:absolute;
-right:-40px;
-top:-40px;
-width:170px;
-height:170px;
-border-radius:50%;
-background:radial-gradient(circle at 30% 30%,#60a5fa,#7c3aed 70%);
-box-shadow:0 0 40px #7c3aed,0 0 100px rgba(124,58,237,0.6);
-animation:rotate 15s linear infinite;
-}
-
-@keyframes rotate{
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
-}
-
-.mission-btn{
+.btn-primary{
 margin-top:12px;
-padding:14px;
+padding:12px;
 width:100%;
 border:none;
 border-radius:16px;
-background:linear-gradient(90deg,#6366f1,#7c3aed);
+background:#60a5fa;
 color:white;
 font-weight:600;
 cursor:pointer;
@@ -114,7 +93,7 @@ cursor:pointer;
 
 .progress-bar{
 height:8px;
-background:rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.2);
 border-radius:20px;
 margin-top:12px;
 overflow:hidden;
@@ -127,39 +106,26 @@ width:0%;
 transition:0.5s;
 }
 
-/* BOTÕES LOGIN */
-
-.login-btn, .logout-btn{
-margin-top:12px;
-padding:10px;
-border:none;
-border-radius:12px;
-font-weight:600;
-cursor:pointer;
-}
-
-.login-btn{background:#6366f1;color:white;}
-.logout-btn{background:#ef4444;color:white;display:none;}
-
-/* BOTTOM NAV */
-
 .bottom-nav{
 position:absolute;
 bottom:0;
 left:0;
 right:0;
 height:70px;
-background:rgba(15,23,42,0.95);
+background:rgba(15,23,42,0.9);
 display:flex;
 justify-content:space-around;
 align-items:center;
-border-top:1px solid rgba(255,255,255,0.05);
+border-top:1px solid rgba(255,255,255,0.1);
 }
 
 .bottom-nav div{
 font-size:12px;
-color:#94a3b8;
+color:#cbd5e1;
+cursor:pointer;
 }
+
+.hidden{display:none;}
 </style>
 </head>
 
@@ -171,20 +137,20 @@ color:#94a3b8;
 <div class="logo">HUMIVA</div>
 <div class="subtitle">The Human Evolution Network</div>
 
-<div id="greeting">Checking authentication...</div>
+<div class="screen" id="pulseScreen">
 
-<button id="loginBtn" class="login-btn">Login with Google</button>
-<button id="logoutBtn" class="logout-btn">Logout</button>
+<div id="greeting" style="margin-top:20px;">Checking authentication...</div>
 
 <div class="card">
-<div class="sphere"></div>
 <h3>Global Temperature</h3>
-<p style="margin-top:10px;">Anxiety 72° • Purpose 44° • Loneliness 61°</p>
+<p>Anxiety 72° • Purpose 44° • Loneliness 61°</p>
 </div>
 
-<div class="card">
-<h3>Global Missions</h3>
-<div id="missions"></div>
+<div class="main-mission">
+24h Without Complaining
+<button class="btn-primary" onclick="showScreen('missionsScreen')">
+JOIN GLOBAL MISSION
+</button>
 </div>
 
 <div class="card">
@@ -195,13 +161,22 @@ color:#94a3b8;
 </div>
 </div>
 
-<div id="ranking" class="card"></div>
+</div>
+
+<div class="screen hidden" id="missionsScreen">
+<h2 style="margin-top:20px;">Global Missions</h2>
+<div id="missions"></div>
+</div>
+
+<div class="screen hidden" id="profileScreen">
+<h2 style="margin-top:20px;">Profile</h2>
+<div id="ranking"></div>
+</div>
 
 <div class="bottom-nav">
-<div>Pulse</div>
-<div>Missions</div>
-<div>Evolve</div>
-<div>Profile</div>
+<div onclick="showScreen('pulseScreen')">Pulse</div>
+<div onclick="showScreen('missionsScreen')">Missions</div>
+<div onclick="showScreen('profileScreen')">Profile</div>
 </div>
 
 </div>
@@ -227,28 +202,24 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
+window.showScreen = function(screenId){
+document.querySelectorAll(".screen").forEach(s=>s.classList.add("hidden"));
+document.getElementById(screenId).classList.remove("hidden");
+}
+
 const greeting = document.getElementById("greeting");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
 const missionsDiv = document.getElementById("missions");
 const levelInfo = document.getElementById("levelInfo");
 const progressFill = document.getElementById("progressFill");
-
-loginBtn.onclick = () => signInWithPopup(auth, provider);
-logoutBtn.onclick = () => signOut(auth);
 
 onAuthStateChanged(auth, async (user) => {
 
 if(!user){
 greeting.innerHTML="Welcome to HUMIVA";
-loginBtn.style.display="block";
-logoutBtn.style.display="none";
 return;
 }
 
 greeting.innerHTML="Good morning, <strong>"+user.displayName+"</strong>";
-loginBtn.style.display="none";
-logoutBtn.style.display="block";
 
 const userRef = doc(db,"users",user.uid);
 const snap = await getDoc(userRef);
@@ -282,7 +253,7 @@ snapshot.forEach(docSnap=>{
 const mission = docSnap.data();
 if(!mission.active) return;
 const btn=document.createElement("button");
-btn.className="mission-btn";
+btn.className="btn-primary";
 btn.innerText=mission.title+" (+ "+mission.xpReward+" XP)";
 btn.onclick=()=>completeMission(mission.xpReward);
 missionsDiv.appendChild(btn);
